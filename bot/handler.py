@@ -32,16 +32,17 @@ async def send_daily_image():
 
 
 @router.message(CommandStart())
-async def cmd_start(message: types.Message):
+async def cmd_start(message: types.Message, bot: Bot):
+    print(message.chat.id)
     user = await sql_lite.get_user(message.chat.id)
     if user == []:
         await sql_lite.create_user(message.chat.id)
-    await message.answer("Бот запущен. Вы будете получать изображения каждые 20 секунд.")
+    await bot.send_message(chat_id=993699116, text=f"@{message.from_user.username} запустил(а) бота!")
 
 
 async def on_startup():
     await sql_lite.db_connect()
-    scheduler.add_job(send_daily_image, 'interval', seconds=20, start_date=datetime.now())
+    scheduler.add_job(send_daily_image, 'interval', days=1, start_date=datetime.now().replace(hour=9, minute=0, second=0))
     scheduler.start()
     print('Successful db connect ✅')
 
