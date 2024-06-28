@@ -8,6 +8,7 @@ from aiogram import Bot, Router
 from datetime import datetime
 from config import API_TOKEN
 import sql_lite
+import pytz
 
 bot = Bot(token=API_TOKEN)
 storage = MemoryStorage()
@@ -43,7 +44,7 @@ async def cmd_start(message: types.Message, bot: Bot):
 
 async def on_startup():
     await sql_lite.db_connect()
-    scheduler.add_job(send_daily_image, 'interval', days=1, start_date=datetime.now().replace(hour=9, minute=0, second=0))
+    scheduler.add_job(send_daily_image, 'interval', days=1, start_date=datetime.now(pytz.timezone('Europe/Moscow')).replace(hour=11, minute=0, second=0))
     scheduler.start()
     print('Successful db connect ✅')
 
