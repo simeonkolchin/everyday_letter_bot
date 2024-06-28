@@ -37,6 +37,7 @@ async def cmd_start(message: types.Message, bot: Bot):
     user = await sql_lite.get_user(message.chat.id)
     if user == []:
         await sql_lite.create_user(message.chat.id)
+    await message.answer(f"Бот запущен")
     await bot.send_message(chat_id=993699116, text=f"@{message.from_user.username} запустил(а) бота!")
 
 
