@@ -16,7 +16,7 @@ async def db_connect():
     con.commit()
 
 
-async def create_user(id, photos='7'):
+async def create_user(id, photos='8'):
     data = (id, photos)
     cur.execute("INSERT INTO users(id, photos) VALUES (?, ?);", data)
     con.commit()

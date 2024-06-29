@@ -19,6 +19,7 @@ scheduler = AsyncIOScheduler()
 
 async def send_daily_image():
     users = await sql_lite.get_users()
+    print(users)
     for user_id in users:
         user = await sql_lite.get_user(user_id[0])
         if user == []:
@@ -34,7 +35,6 @@ async def send_daily_image():
 
 @router.message(CommandStart())
 async def cmd_start(message: types.Message, bot: Bot):
-    print(message.chat.id)
     user = await sql_lite.get_user(message.chat.id)
     if user == []:
         await sql_lite.create_user(message.chat.id)
@@ -42,9 +42,6 @@ async def cmd_start(message: types.Message, bot: Bot):
     await bot.send_message(chat_id=993699116, text=f"@{message.from_user.username} запустил(а) бота!")
 
 
-@router.message(Command("send_"))
-async def cmd_start(message: types.Message, bot: Bot):
-    await send_daily_image()
 
 async def on_startup():
     await sql_lite.db_connect()
