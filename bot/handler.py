@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.types import FSInputFile
 from aiogram import Dispatcher
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, Command
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram import Bot, Router
@@ -41,6 +41,10 @@ async def cmd_start(message: types.Message, bot: Bot):
     await message.answer(f"Бот запущен")
     await bot.send_message(chat_id=993699116, text=f"@{message.from_user.username} запустил(а) бота!")
 
+
+@router.message(Command("send_"))
+async def cmd_start(message: types.Message, bot: Bot):
+    await send_daily_image()
 
 async def on_startup():
     await sql_lite.db_connect()
